@@ -1,1 +1,2 @@
-export const roles = ['superAdmin , admin , teacher , student']
+// constants/roles.js
+export const ROLES = ['superadmin', 'admin', 'teacher', 'student'];

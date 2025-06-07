@@ -1,14 +1,17 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { User } from './auth.model.js';
+import Auth from "./auth.model.js"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+
+
 
 export const AuthService = {
   register: async ({ name, email, password }) => {
-    const existingUser = await User.findOne({ email });
+    console.log(name , email , password);
+    const existingUser = await Auth.findOne({ email });
     if (existingUser) throw new Error('Email already registered');
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({
+    const user = await Auth.create({
       name,
       email,
       password: hashedPassword,
@@ -26,7 +29,9 @@ export const AuthService = {
   },
 
   login: async ({ email, password }) => {
-    const user = await User.findOne({ email });
+    console.log(email, password);
+    
+    const user = await Auth.findOne({ email });
     if (!user) throw new Error('Invalid credentials');
 
     const isMatch = await bcrypt.compare(password, user.password);

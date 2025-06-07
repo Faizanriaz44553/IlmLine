@@ -1,8 +1,9 @@
-// features/auth/auth.model.js
-import mongoose from "mongoose";
-import { roles } from "../../utils/authRole";
 
-const authSchema = new mongoose.Schema(
+import mongoose from "mongoose";
+import { ROLES } from "../../utils/authRole.js";
+
+
+const authSchema = mongoose.Schema(
   {
     email: {
       type: String,
@@ -17,7 +18,7 @@ const authSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: roles,
+      enum: ROLES,
       default: "student",
     },
     isActive: {
