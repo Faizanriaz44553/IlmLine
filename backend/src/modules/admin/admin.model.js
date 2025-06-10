@@ -1,30 +1,31 @@
-// features/admin/admin.model.js
-import mongoose from "mongoose";
+// admin.model.js
+import mongoose from 'mongoose';
 
-const adminSchema = new mongoose.Schema(
-  {
-    authId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Auth",
-      required: true,
-      unique: true,
-    },
-    instituteId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Institute", // You'll define this in institute module
-      required: true,
-    },
-    fullName: {
-      type: String,
-      required: true,
-    },
-    phone: String,
-    profileImage: String,
+const adminSchema = new mongoose.Schema({
+  authId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Auth',
+    required: true,
+    unique: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  instituteId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Institute',
+    required: true,
+  },
+  fullName: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  profileImage: {
+    type: String,
+    default: '',
+  },
+}, { timestamps: true });
 
-const Admin = mongoose.model("Admin", adminSchema);
+const Admin = mongoose.model('Admin', adminSchema);
 export default Admin;

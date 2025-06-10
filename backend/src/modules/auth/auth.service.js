@@ -84,18 +84,30 @@ export const AuthService = {
   },
 
   login: async ({ email, password }) => {
-    const user = await Auth.findOne({ email });
+    const user = await Auth.findOne({ email: email.toLowerCase() });
     if (!user) throw new Error('Invalid credentials');
-
+  
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new Error('Invalid credentials');
-
+  
+    let instituteId = null;
+    if (user.role === 'admin') {
+      const admin = await Admin.findOne({ authId: user._id });
+      instituteId = admin?.instituteId;
+    } else if (user.role === 'teacher') {
+      const teacher = await Teacher.findOne({ authId: user._id });
+      instituteId = teacher?.instituteId;
+    } else if (user.role === 'student') {
+      const student = await Student.findOne({ authId: user._id });
+      instituteId = student?.instituteId;
+    }
+  
     const token = jwt.sign(
-      { userId: user._id, role: user.role },
+      { userId: user._id, role: user.role, instituteId },
       process.env.JWT_SECRET,
-      { expiresIn: '1d' }
+      { expiresIn: '7d' }
     );
-
+  
     return {
       message: 'Login successful',
       token,
@@ -104,7 +116,8 @@ export const AuthService = {
         name: user.name,
         email: user.email,
         role: user.role,
+        instituteId,
       },
     };
-  },
+  }  
 };

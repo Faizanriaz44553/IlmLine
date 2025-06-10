@@ -3,10 +3,10 @@ import { AuthController } from './auth.controller.js';
 import { authorizeRoles } from '../../middleware/role.middleware.js';
 import { authenticate } from '../../middleware/auth.middleware.js';
 
-const router = express.Router();
+const authRouter = express.Router();
 
 // Add Admin Route (Only Super Admin Allowed)
-router.post(
+authRouter.post(
     "/register-admin",
     authenticate,
     authorizeRoles("superadmin"), // ✅ Only super admin can add admin
@@ -14,7 +14,7 @@ router.post(
   );
   
   // Add Teacher Route (Only Admin)
-  router.post(
+  authRouter.post(
     "/register-teacher",
     authenticate,
     authorizeRoles("admin"), // ✅ Only admin can add teacher
@@ -22,13 +22,13 @@ router.post(
   );
   
   // Add Student Route (Only Teacher or Admin)
-  router.post(
+  authRouter.post(
     "/register-student",
     authenticate,
     authorizeRoles("teacher", "admin"), // ✅ Either can add student
     AuthController.register
   );
   
-router.post('/login', AuthController.login);
+  authRouter.post('/login', AuthController.login);
 
-export default router;
+export default authRouter;

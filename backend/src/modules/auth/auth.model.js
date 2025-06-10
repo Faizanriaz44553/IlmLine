@@ -29,6 +29,7 @@ const authSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // can be superadmin/admin who created this user
     },
+    plan: String, // e.g., 'basic', 'pro'
   },
   {
     timestamps: true,
